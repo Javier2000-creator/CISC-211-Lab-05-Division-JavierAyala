@@ -14,7 +14,7 @@
 .type nameStr,%gnu_unique_object
     
 /*** STUDENTS: Change the next line to your name!  **/
-nameStr: .asciz "Inigo Montoya"  
+nameStr: .asciz "Javier Ayala"  
 
 .align   /* realign so that next mem allocations are on word boundaries */
  
@@ -81,6 +81,59 @@ asmFunc:
     
     /*** STUDENTS: Place your code BELOW this line!!! **************/
 
+    ldr r2, =dividend
+    str r0, [r2]       
+    ldr r2, =divisor
+    str r1, [r2]       
+
+    /* Initialize quotient and mod to 0 */
+    ldr r2, =quotient
+    mov r3, #0
+    str r3, [r2]
+    ldr r2, =mod
+    str r3, [r2]
+
+    /* Check for errors (either dividend or divisor is 0) */
+    cmp r0, #0
+    beq error          
+    cmp r1, #0
+    beq error           
+
+    /* Division-by-subtraction method */
+    mov r3, #0       
+    mov r4, r0        
+division_loop:
+    cmp r4, r1       
+    blt final         
+    sub r4, r4, r1    
+    add r3, r3, #1    
+    b division_loop   
+
+final:
+    /* Store quotient and mod results */
+    ldr r2, =quotient
+    str r3, [r2]      
+    ldr r2, =mod
+    str r4, [r2]      
+
+    /* Clear error flag */
+    ldr r2, =we_have_a_problem
+    mov r3, #0
+    str r3, [r2]
+
+    /* Set r0 to quotient's address */
+    ldr r2, =quotient
+    mov r0, r2
+    b done
+
+error:
+    /* Set error flag and return quotient's address */
+    ldr r2, =we_have_a_problem
+    mov r3, #1
+    str r3, [r2]
+    ldr r2, =quotient
+    mov r0, r2
+    b done
     
     /*** STUDENTS: Place your code ABOVE this line!!! **************/
 
