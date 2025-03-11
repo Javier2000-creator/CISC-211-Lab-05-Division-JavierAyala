@@ -80,7 +80,7 @@ asmFunc:
      * Use it to test the C test code */
     
     /*** STUDENTS: Place your code BELOW this line!!! **************/
-
+    
     ldr r2, =dividend
     str r0, [r2]       
     ldr r2, =divisor
@@ -104,7 +104,7 @@ asmFunc:
     mov r4, r0        
 division_loop:
     cmp r4, r1       
-    blt final         
+    blo final         
     sub r4, r4, r1    
     add r3, r3, #1    
     b division_loop   
